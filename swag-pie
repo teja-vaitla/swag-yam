@@ -1,0 +1,1998 @@
+swagger: '2.0'
+info:
+  title: SunSpec oSDX API - Plant Information Exchange
+  description: |
+    The plant information exchange (PIE) api provides all of the information needed for your asset analysis tools. Set of api's had been defined to get access to  historical data.
+  version: "1.0.0"
+host: api.opendem.com
+schemes:
+  - https
+basePath: /pie
+produces:
+  - application/json
+
+paths:
+  /plant:
+    get:
+      summary:  list of all plants
+      description: |
+        get the list of all plants.Attributes include
+        
+          * id: unique ID of the plant
+          
+          
+          * v: version followed by the plant for plant information exchange
+          
+          
+          * locale:  Local Language eg: en-US,de-DE
+      tags:
+        - Plant
+      responses: 
+        200:
+          description: represents a standard block describing information related to a power plant
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NewPlant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+        summary: Create new plant. Duplicates are not allowed
+        description: |
+          plant  api allows to create new plant. The user needs to know the following attributes before he creates a plant
+            
+            
+            * id: unique ID of the plant
+            
+            
+            * v: version followed by the plant for plant information exchange
+            
+            
+            * locale:  Local Language eg: en-US,de-DE
+        tags:
+          - Plant
+        parameters:
+          - name: plant
+            in: body
+            description: new plant
+            required: true
+            schema:
+              $ref: '#/definitions/NewPlant'
+        responses:
+          201:
+            description: plant created
+      
+          default:
+            description: Unexpected Error 
+            schema:
+              $ref: '#/definitions/Error'
+              
+  /plant/{Id}:
+    get:
+      summary:  get details of particular plant
+      description: |
+        get details of particular plant
+        
+          * id: unique ID of the plant
+          
+          
+          * v: version followed by the plant for plant information exchange
+          
+          
+          * locale:  Local Language eg: en-US,de-DE
+      parameters:
+        - name: Id 
+          in: path
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - Plant
+      responses: 
+        200:
+          description: represents a standard block describing information related to a power plant
+          schema:
+            $ref: '#/definitions/NewPlant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+        summary: Update plant information
+        description: |
+          Update plant information. available attributes are:
+            
+            
+            * id: unique ID of the plant
+            
+            
+            * v: version followed by the plant for plant information exchange
+            
+            
+            * locale:  Local Language eg: en-US,de-DE
+        tags:
+          - Plant
+        parameters:
+          - name: Id
+            in: path
+            description: plant Id
+            required: true
+            type: integer
+            format: int32
+          - name: plant
+            in: body
+            description: new plant
+            required: true
+            schema:
+              $ref: '#/definitions/NewPlant'
+        responses:
+          201:
+            description: plant Updated
+      
+          default:
+            description: Unexpected Error 
+            schema:
+              $ref: '#/definitions/Error'
+    delete:
+      summary: Delete a plant
+      description: delete a plant
+      parameters:
+        - name: Id
+          in: path
+          description: Id of plant to delete
+          required: true
+          type: integer
+          format: int32
+      tags:
+        - Plant
+      responses:
+        "204":
+          description: plant deleted
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+   
+              
+  /plantInfo:
+    get:
+      summary: GetPlant Information
+      description: |
+        It represents a standard block describing information related to a power plant. It provides descriptive properties of the power plant for both customers and tools. the plant api has the following attributes
+          
+          
+        
+        The plant api has optionally the following attributes.
+        
+          *  name: represents a common name of the plant
+        
+        
+          *  description: represents text description of the plant
+        
+          
+          *  notes: represents additional info 
+        
+          
+          *  activationDate:  represents the date the power plant described by the plant element that is its parent was actively delivering power to the utility grid or energy off-taker
+        
+          
+          *  location: represents location of plant
+        
+          
+          *  nameplate: represents physical characterstics of the plant
+        
+        
+          * pvArray: represents the details of pvArray in the plant 
+          
+          
+          *  capabilities: represents control capabilites of the plant
+        
+          
+          *  designElememt: represents design type of the plant elements.
+        
+          
+          *  participant: represents organizations participating in the operation of the plant
+    
+
+      tags:
+        - Plant - Plant info
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to a power plant
+          schema:
+              $ref: '#/definitions/plant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    post:
+      summary: Create Plant Information
+      description: |
+        It represents a standard block describing information related to a power plant. It provides descriptive properties of the power plant for both customers and tools. the plant api has the following attributes
+          
+          
+        
+        The plant api has optionally the following attributes.
+        
+          *  name: represents a common name of the plant
+        
+        
+          *  description: represents text description of the plant
+        
+          
+          *  notes: represents additional info 
+        
+          
+          *  activationDate:  represents the date the power plant described by the plant element that is its parent was actively delivering power to the utility grid or energy off-taker
+        
+          
+          *  location: represents location of plant
+        
+          
+          *  nameplate: represents physical characterstics of the plant
+        
+        
+          * pvArray: represents the details of pvArray in the plant 
+          
+          
+          *  capabilities: represents control capabilites of the plant
+        
+          
+          *  designElememt: represents design type of the plant elements.
+        
+          
+          *  participant: represents organizations participating in the operation of the plant
+    
+
+      tags:
+        - Plant - Plant info
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+          
+        - name: plantInfo
+          in: body
+          description: Create plant information
+          required: true
+          schema:
+            $ref: '#/definitions/plant'
+      responses: 
+        201:
+          description: Plant Information Created
+
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    put:
+      summary: Update Plant Information
+      description: |
+        Update Plant Information. It provides descriptive properties of the power plant for both customers and tools. the plant api has the following attributes
+          
+          
+        
+        The plant api has optionally the following attributes.
+        
+          *  name: represents a common name of the plant
+        
+        
+          *  description: represents text description of the plant
+        
+          
+          *  notes: represents additional info 
+        
+          
+          *  activationDate:  represents the date the power plant described by the plant element that is its parent was actively delivering power to the utility grid or energy off-taker
+        
+          
+          *  location: represents location of plant
+        
+          
+          *  nameplate: represents physical characterstics of the plant
+        
+        
+          * pvArray: represents the details of pvArray in the plant 
+          
+          
+          *  capabilities: represents control capabilites of the plant
+        
+          
+          *  designElememt: represents design type of the plant elements.
+        
+          
+          *  participant: represents organizations participating in the operation of the plant
+    
+
+      tags:
+        - Plant - Plant info
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+          
+        - name: plantInfo
+          in: body
+          description: Create plant information
+          required: true
+          schema:
+            $ref: '#/definitions/plant'
+      responses: 
+        201:
+          description: Plant Information Updated
+
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    delete:
+      summary: Delete Plant Information
+      description: |
+        Delete plant information.
+    
+
+      tags:
+        - Plant - Plant info
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        204:
+          description: Plant information deleted.
+          schema:
+              $ref: '#/definitions/plant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+            
+  /location:
+    get:
+      summary: Get location of particular plant
+      description: |
+        represents a standard block describing information related to location of a given power plant.
+        
+        The location api optionally has following attributes :
+          * latitude:	 represents the decimal degrees north or south of the equator of the plant element that is its ascendant
+ 
+ 
+          * longitude:	represents the decimal degrees east or west from the Prime Meridian of the plant element that is its ascendant.
+
+           
+          * line1:	represents the first line of detailed address information of the plant element that is its ascendant.
+
+
+          * line2:	represents the second line of detailed address information of the plant element that is its ascendant.
+
+
+          * city:	represents the city in which or most near to the plant element that is its ascendant.
+
+
+          * stateProvince:	represents the subdivision (e.g., province or state) within the country of the plant element that is its ascendant
+
+
+          * country:	represents the country of the plant element that is its ascendant.
+
+
+          * postal:	represents the geographical area of the plant element that is its ascendant, as delineated by the local postal system.
+
+
+          * elevation:	represents the average elevation of the plant element that is its ascendant
+
+
+          * timezone:	represents the time zone of the plant element that is its ascendant. 
+
+
+          * mapURL:	represents  an aerial or other image of the plant, or a map application such as google earth that can be used to render and image of the plant
+
+
+      tags:
+        - Plant - Location
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to location of a given power plant
+          schema:
+              $ref: '#/definitions/location'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    put:
+      summary: update location of particular plant
+      description: |
+        update plant location Information
+        
+        The location api optionally has following attributes :
+          * latitude:	 represents the decimal degrees north or south of the equator of the plant element that is its ascendant
+ 
+ 
+          * longitude:	represents the decimal degrees east or west from the Prime Meridian of the plant element that is its ascendant.
+
+           
+          * line1:	represents the first line of detailed address information of the plant element that is its ascendant.
+
+
+          * line2:	represents the second line of detailed address information of the plant element that is its ascendant.
+
+
+          * city:	represents the city in which or most near to the plant element that is its ascendant.
+
+
+          * stateProvince:	represents the subdivision (e.g., province or state) within the country of the plant element that is its ascendant
+
+
+          * country:	represents the country of the plant element that is its ascendant.
+
+
+          * postal:	represents the geographical area of the plant element that is its ascendant, as delineated by the local postal system.
+
+
+          * elevation:	represents the average elevation of the plant element that is its ascendant
+
+
+          * timezone:	represents the time zone of the plant element that is its ascendant. 
+
+
+          * mapURL:	represents  an aerial or other image of the plant, or a map application such as google earth that can be used to render and image of the plant
+
+
+      tags:
+        - Plant - Location
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        - name: Location
+          in: body
+          description: update location
+          required: true
+          schema:
+            $ref: '#/definitions/location'
+      responses: 
+        201:
+          description: Plant information updated
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    delete:
+      summary: delete location of a particular plant
+      description: |
+        delete plant location Information
+    
+      tags:
+        - Plant - Location
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        204:
+          description: Plant location information deleted.
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+
+  /nameplate:
+    get:
+      summary: get nameplate info of particular plant
+      description: |
+        represents a standard block describing information related to nameplate of a given power plant
+        
+        The nameplate api optionally has the following attributes :
+        
+        * installedDCCapacity:	represents the total installed direct current capacity of the power plant expressed in kW
+        
+        
+        * installedACCapacity:	represents  the total installed alternating current capacity of the power plant expressed in kW
+        
+        
+        * installedPanelArea:	represents the total surface area of panels installed at the power plant expressed in m2
+        
+        
+        * nominalPowerRating:	represents the total nominal power of the power plant expressed in kWp
+        
+      tags:
+        - Plant - Name Plate
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to nameplate of a given power plant
+          schema:
+              $ref: '#/definitions/nameplate'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    put:
+      summary: update nameplate info of particular plant
+      description: |
+        Update Plant nameplate Information
+        
+        The nameplate api optionally has the following attributes :
+        
+        * installedDCCapacity:	represents the total installed direct current capacity of the power plant expressed in kW
+        
+        
+        * installedACCapacity:	represents  the total installed alternating current capacity of the power plant expressed in kW
+        
+        
+        * installedPanelArea:	represents the total surface area of panels installed at the power plant expressed in m2
+        
+        
+        * nominalPowerRating:	represents the total nominal power of the power plant expressed in kWp
+        
+      tags:
+        - Plant - Name Plate
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        - name: name plate
+          in: body
+          description: update name plate
+          required: true
+          schema:
+            $ref: '#/definitions/nameplate'
+      responses: 
+        200:
+          description: plant information updated
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+    delete:
+      summary: delete nameplate info of particular plant
+      description: |
+        delete Plant nameplate Information
+        
+        
+      tags:
+        - Plant - Name Plate
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        
+      responses: 
+        204:
+          description: plant information deleted
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'  
+  /designElement:
+    get:
+      summary: Get Design Elements info of particular plant
+      description: |
+        represents a standard block describing information related to design elements of given power plant
+       
+        The designElement has the following attributes:
+        
+        
+        * plantType: Represents plantType. Possible Values: Residential, Commercial, Industrial, Utility
+
+        
+        * inverterType: Represents inverterType. Possible Values: Micro, String, Central
+        
+        
+        * DCOptimized: Represents wether  DCOptimized or not. Possible Values: None, String, Panel
+        
+        
+        * mountingType: Represents mountingType. Possible Values: Fixed, Horizontal, Tilted, Azimuth, Dual. Mixed
+        
+        
+        * weatherType: Represents weatherType. Possible Values: Onsite, Satellite, Local, Model, Mixed
+
+
+      tags:
+        - Plant - Design Element
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to design elements of given power plant
+          schema:
+              $ref: '#/definitions/plant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update Design Elements info of particular plant
+      description: |
+        Update design elements information
+       
+        The designElement has the following attributes:
+        
+        
+        * plantType: Represents plantType. Possible Values: Residential, Commercial, Industrial, Utility
+
+        
+        * inverterType: Represents inverterType. Possible Values: Micro, String, Central
+        
+        
+        * DCOptimized: Represents wether  DCOptimized or not. Possible Values: None, String, Panel
+        
+        
+        * mountingType: Represents mountingType. Possible Values: Fixed, Horizontal, Tilted, Azimuth, Dual. Mixed
+        
+        
+        * weatherType: Represents weatherType. Possible Values: Onsite, Satellite, Local, Model, Mixed
+
+
+      tags:
+        - Plant - Design Element
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        - name: designElement
+          in: body
+          description: new plant
+          required: true
+          schema:
+            $ref: '#/definitions/designElement'
+      responses: 
+        200:
+          description: represents a standard block describing information related to design elements of given power plant
+          schema:
+              $ref: '#/definitions/plant'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete Design Elements info of particular plant
+      description: |
+        delete design elements information
+       
+        The designElement has the following attributes:
+        
+        
+        * plantType: Represents plantType. Possible Values: Residential, Commercial, Industrial, Utility
+
+        
+        * inverterType: Represents inverterType. Possible Values: Micro, String, Central
+        
+        
+        * DCOptimized: Represents wether  DCOptimized or not. Possible Values: None, String, Panel
+        
+        
+        * mountingType: Represents mountingType. Possible Values: Fixed, Horizontal, Tilted, Azimuth, Dual. Mixed
+        
+        
+        * weatherType: Represents weatherType. Possible Values: Onsite, Satellite, Local, Model, Mixed
+
+
+      tags:
+        - Plant - Design Element
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        
+      responses: 
+        200:
+          description: design element information deleted
+          
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /capabilites:
+    get:
+      summary: Get plant capabilites information of particular plant
+      description: |
+        represents a standard block describing information related to capabilites of given power plant.
+        
+        
+        The capabilites api has the following attributes:
+        
+        
+        * fixedWatt: Represents the fixed watt control capability is present at the power plant
+
+
+        * fixedPF: Represents the fixed power factor control capability exists at the power plant
+        
+        
+        * fixedVAr: Represents the fixed reactive power control capability is present at the power plant
+        
+        
+        * voltVAr: Represents the volt reactive power control capability is present at the power plant
+        
+        
+        * freqWatt: Represents the frequency watt control capability is present at the power plant
+        
+        
+        * dynamicVAr: Represents the dynamic reactive power control capability is present at the power plant
+        
+        
+        * lowVoltageRideThrough: Represents the low voltage ride through capability is present at the power plant
+        
+        
+        * highVoltageRideThrough: Represents the high voltage ride through capability is present at the power plant
+        
+        
+        * charge: Represents the capability to control storage charging is present at the power plant
+        
+        
+        * discharge: Represents the capability to control storage discharging is present at the power plant
+
+      tags:
+        - Plant - Capabilites
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to capabilites of given power plant
+          schema:
+              $ref: '#/definitions/capabilites'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update plant capabilites information of particular plant
+      description: |
+        Update plant Capabilites Information
+        
+        
+        The capabilites api has the following attributes:
+        
+        
+        * fixedWatt: Represents the fixed watt control capability is present at the power plant
+
+
+        * fixedPF: Represents the fixed power factor control capability exists at the power plant
+        
+        
+        * fixedVAr: Represents the fixed reactive power control capability is present at the power plant
+        
+        
+        * voltVAr: Represents the volt reactive power control capability is present at the power plant
+        
+        
+        * freqWatt: Represents the frequency watt control capability is present at the power plant
+        
+        
+        * dynamicVAr: Represents the dynamic reactive power control capability is present at the power plant
+        
+        
+        * lowVoltageRideThrough: Represents the low voltage ride through capability is present at the power plant
+        
+        
+        * highVoltageRideThrough: Represents the high voltage ride through capability is present at the power plant
+        
+        
+        * charge: Represents the capability to control storage charging is present at the power plant
+        
+        
+        * discharge: Represents the capability to control storage discharging is present at the power plant
+
+      tags:
+        - Plant - Capabilites
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        - name: Capabilites
+          in: body
+          description:  plant Capabilites
+          required: true
+          schema:
+            $ref: '#/definitions/capabilites'
+      responses: 
+        201:
+          description: Plant capabilites i9nformation updated
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete plant capabilites information of particular plant
+      description: |
+        Delete plant Capabilites Information
+      
+
+      tags:
+        - Plant - Capabilites
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        204:
+          description: Plant capabilites i9nformation deleted
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /pvArray:
+    get:
+      summary: Get PV array  information of particular plant
+      description: |
+        represents a standard block describing information related to pv Array parameters of given power plant
+        
+        The pvArray api has optionally the following attributes
+        
+        * description: represents description or Identifier
+
+
+        * numModules: represents number of modules, or panels, in the array
+ 
+        
+        * m2: represents the total surface area of panels expressed in m2
+
+        
+        * orientation: represents the orientation of the array in degrees from true North.
+
+        
+        * trackerType: represents the type of tracker employed. Fixed Array, Single-Axis Tracker, Dual-Axis Tracker
+  
+        
+        * fixedTilt: represents the fixed tilt value if not tracked.
+  
+        
+        * fixedAzimuth: represents the fixed azimuth value if not tracked.
+   
+        
+        * dcRating: represents total DC STC rating of the array in kW
+    
+        
+        * installType: represents rooftop/Ground
+    
+        
+        * num: represents number of arrays of this type
+
+      tags:
+        - Plant - PVarray
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents a standard block describing information related to pv Array parameters of given power plant
+          schema:
+              $ref: '#/definitions/pvArray'
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update  PV array  information of particular plant
+      description: |
+       Update PVarray information
+        
+        The pvArray api has optionally the following attributes
+        
+        * description: represents description or Identifier
+
+
+        * numModules: represents number of modules, or panels, in the array
+ 
+        
+        * m2: represents the total surface area of panels expressed in m2
+
+        
+        * orientation: represents the orientation of the array in degrees from true North.
+
+        
+        * trackerType: represents the type of tracker employed. Fixed Array, Single-Axis Tracker, Dual-Axis Tracker
+  
+        
+        * fixedTilt: represents the fixed tilt value if not tracked.
+  
+        
+        * fixedAzimuth: represents the fixed azimuth value if not tracked.
+   
+        
+        * dcRating: represents total DC STC rating of the array in kW
+    
+        
+        * installType: represents rooftop/Ground
+    
+        
+        * num: represents number of arrays of this type
+
+      tags:
+        - Plant - PVarray
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+        - name: pvArray
+          in: body
+          description:  plant pv array information
+          required: true
+          schema:
+            $ref: '#/definitions/pvArray'
+      responses: 
+        201:
+          description: pv array information updated
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: delete  PV array  information of particular plant
+      description: |
+       delete PVarray information
+
+      tags:
+        - Plant - PVarray
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        204:
+          description: pv array information deleted
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /equipment:
+    get:
+      summary: Get list of all equipments of a particular plant
+      description: |
+          represents an array of all equipments present in a particular plant.
+          
+          equipment api has the following attributes
+
+            * Modules:represents an array with  metadata of each module  available at the plant
+            
+            
+            * Meters:represents an array with  metadata of each meter  available at the plant
+            
+            
+            * Inverters:represents an array with  metadata of each inverter  available at the plant
+            
+            
+            * Combiners:represents an array with  metadata of each combiner  available at the plant
+            
+            
+            * Sensors:represents an array with  metadata of each sensor  available at the plant
+            
+            
+            * Loggers:represents an array with  metadata of each logger  available at the plant
+      tags:
+        - Plant - Equipment
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents an array of all equipments present in a particular plant.
+          schema:
+              $ref: '#/definitions/equipment'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /participant:
+    get:
+      summary: Get list of all participants of a particular plant
+      description: |
+          represents an array of all participants present in a particular plant.
+          
+           participant api has the following attributes:
+          * type: represents the type of participant.possible values:owner, designer, installer, custodian, financier, offtaker, jurisdiction
+
+
+          * organization: represents the name of the organization participating in the operation of the power plant
+          
+          
+          * contact: represents the name of the person at the organization participating in the operation of the power plant
+          
+          
+          * phone: represents the phone number of the organization participating in the operation of the power plant. All phone numbers should be conveyed without formatting and contain the country code to support international dialing
+          
+          
+          * email: represents the email address of the person at the organization
+          
+      tags:
+        - Plant - Participants
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents an array of all participants present in a particular plant.
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/participant'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  
+  
+  /arrayLevel:
+    get:
+      summary: get agregated array level measurements for each array.
+      description: |
+          represents an array of agregated array level measurements for each array.
+          
+          
+          arrayLevel api has the following attributes:
+          * DCWH: Lifetime DC energy generated from array
+
+
+          * DCW: DC power output of array
+          
+          
+          * DCV: DC voltage reference at array output.
+          
+          
+          * DCA: DC current reference at array output.
+          
+          
+          * Gpoai: Irradiance measurement in plane of array
+          
+          
+          * Hpoai: Lifetime irradiation received in plane of array
+          
+          
+          * Tmpbom: Back of module temperature reference for array
+          
+      tags:
+        - Aggregate Data - Array level
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents an array of agregated array level measurements for each array.
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/arrayLevelMeasurements'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /plantAvailability:
+    get:
+      summary: get plant availability states.
+      description: |
+          represents plant availability states - expressed as a percentage of the interval time in any given state.
+          
+          plantAvailability api has the following attributes expressed as a percentage of the interval time in any given state.
+          
+          
+          * Operating: Connected and generating power
+
+
+          * Islanded: Disconnected and generating power for local loads
+          
+          
+          * Standby: Includes starting up, shutting down, test mode
+          
+          
+          * Env: Environmental conditions are out of spec. I.e. not enough sunlight to generate power
+          
+          
+          * Grid: Grid conditions are out of spec. I.e. voltage or frequency violations caused the plant to trip off.
+          
+          
+          * Shutdown: Operator requested shutdown for maintenance, testing, or other purposes
+          
+          
+          * Forced: Outage due to Plant failure
+          
+          
+          * Emergency: Shutdown due to force majeure. Extraordianry event beyond the control of the operators.
+      tags:
+        - Aggregate Data - Plant availability
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents plant availability states - expressed as a percentage of the interval time in any given state.
+          schema:
+              $ref: '#/definitions/plantAvailability'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /netEnergy:
+    get:
+      summary: get net energy measurements of given plant.
+      description: |
+          represents net energy measurements of given plant.
+          
+          netEnergy api has the following attributes:
+          * WHl: Lifetime ac energy exported to facility loads
+
+
+          * WHx: Lifetime ac energy exported to grid
+          
+          
+          * WHi: Lifetime ac energy imported from grid
+          
+          
+          * WHc: Lifetime ac energy charged to storage
+          
+          
+          * WHd: Lifetime ac energy discharged from storage
+          
+          
+          * WHp: Lifetime ac energy imported to PV (parasitic losses)
+      tags:
+        - Aggregate Data - Net energy
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents net energy measurements of given plant.
+          schema:
+              $ref: '#/definitions/netEnergyMeasurements'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /plantLevel:
+    get:
+      summary: get plant level measurements of given plant.
+      description: |
+          represents plant level measurements of given plant.
+          
+          PlantLevel api has the following attributes:
+          * WH: Lifetime AC energy generated by all PV
+
+
+          * W: AC real power reference at point of interconnect
+          
+          
+          * V: AC voltage reference at point of interconnect.
+          
+          
+          * A: AC current reference at point of interconnect.
+          
+          
+          * Hz: Frequency reference at point of interconnect
+          
+          
+          * PF: Powerfactor reference at point of interconect
+          
+          
+          * Gghi: Powerfactor reference at point of interconect
+          
+          
+          * Tmpamb: Ambient temperature reference (C)
+          
+          
+          * WndSpd: Wind speed reference (m/s)
+          
+          
+          * Pres: Atmospheric pressure reference (hPa)
+
+      tags:
+        - Aggregate Data - Plant level
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents plant level measurements of given plant.
+          schema:
+              $ref: '#/definitions/plantLevelMeasurements'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+  /faults:
+    get:
+      summary: get number of faults of a given type and timestamp of oldest fault of that type
+      description: |
+          represents number of faults of a given type and timestamp of oldest fault of that type.
+          
+          
+          faults api has the following attributes:
+          * inverter: Number of active inverter faults, timestamp of oldest active
+
+
+          * module: Number of active module faults, timestamp of oldest active
+          
+          
+          * meter: Number of active meter faults, timestamp of oldest active
+          
+          
+          * sensor: Number of active sensor faults, timestamp of oldest active
+          
+          
+          * comm: Number of active communication faults, time stamp of oldest active
+          
+          
+          * other: Number of other active faults, time stamp of oldest active
+          
+      tags:
+        - Aggregate Data - Faults
+      parameters:
+        - name: Id 
+          in: query
+          description: plant Id
+          required: true
+          type: integer
+          format: int32
+      responses: 
+        200:
+          description: represents number of faults of a given type and timestamp of oldest fault of that type
+          schema:
+              $ref: '#/definitions/Faults'
+              
+        default:
+          description: Unexpected Error 
+          schema:
+            $ref: '#/definitions/Error'
+    
+
+definitions:
+  NewPlant:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: represents a value generated in accordance with the UUID Version 4 Random algorithm as described in RFC 4122 section 4.4.
+          format: int32
+        v:
+          type: number
+          description: represents the version number describing the plant element specification with which the entire plant block complies.
+          format: float
+        locale:
+          type: string
+          description: represents  language in which allvalues in the plant element and any other elements in the plant standard block content model are represented.
+          
+      
+  plant:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: represents a value generated in accordance with the UUID Version 4 Random algorithm as described in RFC 4122 section 4.4
+          format: int32
+        v:
+          type: number
+          description: represents the version number describing the plant element specification with which the entire plant block complies
+          format: float
+        locale:
+          type: string
+          description: represents  language in which allvalues in the plant element and any other elements in the plant standard block content model are represented
+        name:
+          type: string
+          description: represents the common name of the plant element, that is its parent
+        description:
+          type: string
+          description: represents a text description of the plant element, that is its parent.
+        notes:
+          type: string
+          description: additional info
+        activationDate:
+          type: string
+          description: represents the date the power plant described by the plant element that is its parent was actively delivering power to the utility grid or energy off-taker
+          format: date
+        location:
+          $ref: '#/definitions/location'
+        nameplate:
+          $ref: '#/definitions/nameplate'
+        pvArray:
+          $ref: '#/definitions/pvArray'
+          
+        designElement:
+          $ref: '#/definitions/designElement'
+        capabilites:
+          $ref: '#/definitions/capabilites'
+        equipment:
+          $ref: '#/definitions/equipment'
+  nameplate:
+    type: object
+    properties:
+      installedDCCapacity:
+        type: number
+        description: represents the total installed direct current capacity of the power plant expressed in kW
+        format: float 
+      installedACCapacity:
+        type: number
+        description: represents  the total installed alternating current capacity of the power plant expressed in kW
+        format: float 
+      installedPanelArea:
+        type: integer
+        description: represents the total surface area of panels installed at the power plant expressed in m2
+        format: int32 
+      nominalPowerRating:
+        type: number
+        description: represents the total nominal power of the power plant expressed in kWp
+        format: float 
+  location:
+    type: object
+    properties:
+      latitude:
+        type: number
+        description:  represents the decimal degrees north or south of the equator of the plant element that is its ascendant
+        format: float 
+      longitude:
+        type: number
+        description: represents the decimal degrees east or west from the Prime Meridian of the plant element that is its ascendant.
+        format: float 
+      line1:
+        type: string
+        description: represents the first line of detailed address information of the plant element that is its ascendant.
+      line2:
+        type: string
+        description: represents the second line of detailed address information of the plant element that is its ascendant
+      city:
+        type: string
+        description: represents the city in which or most near to the plant element that is its ascendant.
+      stateProvince:
+        type: string
+        description: represents the subdivision (e.g., province or state) within the country of the plant element that is its ascendant
+      country:
+        type: string
+        description: represents the country of the plant element that is its ascendant.
+      postal:
+        type: string
+        description: represents the geographical area of the plant element that is its ascendant, as delineated by the local postal system.
+      elevation:
+        type: number
+        description: represents the average elevation of the plant element that is its ascendant
+        format: float 
+      timezone:
+        type: string
+        description: represents the time zone of the plant element that is its ascendant. 
+      mapURL:
+        type: string
+        description: represents  an aerial or other image of the plant, or a map application such as google earth that can be used to render and image of the plant
+  designElement:
+    type: object
+    properties:
+      plantType:
+        type: string
+        description: Represents plantType. Possible Values- Residential, Commercial, Industrial, Utility
+        enum:
+        - Residential
+        - Commercial
+        - Industrial
+        - Utility
+      inverterType:
+        type: string
+        description: Represents inverterType. Possible Values- Micro, String, Central
+        enum:
+        - Micro
+        - String
+        - Central
+      DCOptimized:
+        type: string
+        description: Represents wether  DCOptimized or not. Possible Values- None, String, Panel
+        enum:
+        - None
+        - String
+        - Panel
+      mountingType:
+        type: string
+        description: Represents mountingType. Possible Values- Fixed, Horizontal, Tilted, Azimuth, Dual. Mixed
+        enum:
+        - Fixed
+        - Horizontal
+        - Tilted
+        - Azimuth
+        - Dual
+        - Mixed
+      weatherType:
+        type: string
+        description: Represents weatherType. Possible Values- Onsite, Satellite, Local, Model, Mixed
+        enum:
+        - Onsite
+        - Satellite
+        - Local
+        - Model
+        - Mixed
+  capabilites:
+    type: object      
+    properties:
+      fixedWatt:
+        type: boolean
+        description: Represents the fixed watt control capability is present at the power plant
+      fixedPF:
+        type: boolean
+        description: Represents the fixed power factor control capability exists at the power plant
+      fixedVAr:
+        type: boolean
+        description: Represents the fixed reactive power control capability is present at the power plant
+      voltVAr:
+        type: boolean
+        description: Represents the volt reactive power control capability is present at the power plant
+      freqWatt:
+        type: boolean
+        description: Represents the frequency watt control capability is present at the power plant
+      dynamicVAr:
+        type: boolean
+        description: Represents the dynamic reactive power control capability is present at the power plant
+      lowVoltageRideThrough:
+        type: boolean
+        description: Represents the low voltage ride through capability is present at the power plant
+      highVoltageRideThrough:
+        type: boolean
+        description: Represents the high voltage ride through capability is present at the power plant
+      charge:
+        type: boolean
+        description: Represents the capability to control storage charging is present at the power plant
+      discharge:
+        type: boolean
+        description: Represents the capability to control storage discharging is present at the power plant
+  pvArray:
+    type: object
+    properties:
+      description:
+        type: string
+        description: represents description or Identifier
+      numModules:
+        type: integer
+        description: represents number of modules, or panels, in the array
+        format: int32 
+      m2:
+        type: integer
+        description: represents the total surface area of panels expressed in m2
+        format: int32 
+      orientation:
+        type: number
+        description: represents the orientation of the array in degrees from true North.
+        format: float 
+      trackerType:
+        type: string
+        description: represents the type of tracker employed. Fixed Array, Single-Axis Tracker, Dual-Axis Tracker
+      fixedTilt:
+        type: number
+        description: represents the fixed tilt value if not tracked.
+        format: float 
+      fixedAzimuth:
+        type: number
+        description: represents the fixed azimuth value if not tracked.
+        format: float 
+      dcRating:
+        type: number
+        description: represents total DC STC rating of the array in kW
+        format: float 
+      installType:
+        type: string
+        description: represents rooftop/Ground
+      num:
+        type: integer
+        description: represents number of arrays of this type
+        format: int32 
+        
+  equipment:
+    type: object
+    properties:
+      Modules:
+        type: array
+        description: Array of modules
+        items:
+          $ref: '#/definitions/Module'
+      Meters:
+        type: array
+        description: Array of meters
+        items:
+          $ref: '#/definitions/Meter'
+      Inverters:
+        type: array
+        description: Array of meters
+        items:
+          $ref: '#/definitions/Inverter'
+      Combiners:
+        type: array
+        description: Array of combiners
+        items:
+          $ref: '#/definitions/Combiner'
+      Sensors:
+        type: array
+        description: Array of Sensors
+        items:
+          $ref: '#/definitions/Sensor'
+      Loggers:
+        type: array
+        description: Array of Loggers
+        items:
+          $ref: '#/definitions/Logger'
+  Module:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      stc:
+        type: number
+        description: Nameplate DC power rating of module at STC
+        format: float 
+      m2:
+        type: number
+        description: Nameplate surface area of module
+        format: float 
+      tcoef:
+        type: number
+        description: Nameplate temperature correction coefficient
+        format: float 
+      num:
+        type: number
+        description: Number of installed modules
+        format: float 
+  Meter:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      num:
+        type: number
+        description: Number of installed meters
+        format: float
+      uncertainty:
+        type: number
+        description: Nameplate uncertainty of meter
+        format: float
+  Inverter:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      num:
+        type: number
+        description: Number of installed inverters
+        format: float
+      WRtg:
+        type: number
+        description: Nameplate AC power rating of inverter
+        format: float
+  Combiner:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      num:
+        type: number
+        description: Number of installed combiners
+        format: float
+      DCWRtg:
+        type: number
+        description: Nameplate DC power rating of combiner
+        format: float
+  Sensor:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      num:
+        type: number
+        description: Number of installed sensors
+        format: float
+      uncertainty:
+        type: number
+        description: Nameplate uncertainty of sensor
+        format: float
+      measurement:
+        type: number
+        description: The measurement this sensor provides (irradiance, temp, pressure, humidity)
+        format: float
+  Logger:
+    type: object
+    properties:
+      Mn:
+        type: string
+        description: Manufacturer
+      Md:
+        type: number
+        description: Model number
+        format: float 
+      num:
+        type: number
+        description: Number of installed loggers
+        format: float
+      Vr:
+        type: string
+        description: Version
+      network:
+        type: string
+        description: The type of backhaul network used (dedicated, shared, wireless, cellular)
+      fieldbus:
+        type: string
+        description: The type of fieldbus network used (serial, ethernet, wifi, zigbee, plc, other)
+
+  participant:
+    type: object
+    properties:
+      contact_id: 
+        type: integer
+        format: int32
+        description: Id of a particular participant
+      type:
+        type: string
+        description: |
+          represents the type of participant
+          type has the following set of options
+            operator: The operator of the power plant, responsible for the production of power.
+            owner: The owner of the power plant’s assets.
+            designer: The designer of the power plant, responsible for the specifications.
+            installer: The installer of the power plant, responsible for the construction.
+            custodian: The keeper of the monitoring data
+            financier: The provider of capital for the plant construction
+            offtaker: The purchaser of the energy produced by the plant
+            jurisdiction: The utility which the power plant is interconnected
+        enum:
+         - operator
+         - owner
+         - designer
+         - installer
+         - custodian
+         - financier
+         - offtaker
+         - jurisdiction
+      organization:
+        type: string
+        description: represents the name of the organization participating in the operation of the power plant
+      contact:
+        type: string
+        description: represents the name of the person at the organization participating in the operation of the power plant
+      phone:
+        type: string
+        description: represents the phone number of the organization participating in the operation of the power plant. All phone numbers should be conveyed without formatting and contain the country code to support international dialing
+      email:
+        type: string
+        description: represents the email address of the person at the organization participating in the operation of the power plant
+
+  arrayLevelMeasurements:
+      type: object
+      properties:
+        DCWH:
+          type: number
+          description: Lifetime DC energy generated from array
+          format: float 
+        DCW:
+          type: number
+          description: DC power output of array
+          format: float 
+        DCV:
+          type: number
+          description: DC voltage reference at array output
+          format: float
+        DCA:
+          type: number
+          description: DC current reference at array output
+          format: float
+        Gpoai:
+          type: number
+          description: Irradiance measurement in plane of array
+          format: float
+        Hpoai:
+          type: number
+          description: Lifetime irradiation received in plane of array
+          format: float 
+        Tmpbom:
+          type: number
+          description: Back of module temperature reference for array
+          format: float    
+  plantAvailability:
+    type: object
+    description: Plant Availability States - expressed as a percentage of the interval time in any given state.
+    properties:
+      Operating:
+        type: number
+        description: Connected and generating power
+        format: float 
+      Islanded:
+        type: number
+        description: Disconnected and generating power for local loads
+        format: float 
+      Standby:
+        type: number
+        description: Includes starting up, shutting down, test mode
+        format: float
+      Env:
+        type: number
+        description: Enviornmental conditions are out of spec. I.e. not enough sunlight to generate power
+        format: float
+      Grid:
+        type: number
+        description: Grid conditions are out of spec. I.e. voltage or frequency voilations caused the plant to trip off
+        format: float
+      Shutdown:
+        type: number
+        description: Operator requested shutdown for maintenance, testing, or other purposes
+        format: float 
+      Forced:
+        type: number
+        description: Outage due to plant failure
+        format: float
+      Emergency:
+        type: number
+        description: Shutdown due to force majeure. Extraordianry event beyond the control of the operators
+        format: float
+  Faults:
+    type: object
+    properties:
+      inverter:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active inverter faults.
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active inverter fault.
+      module:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active module faults.
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active module fault.
+      meter:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active meter faults
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active meter fault
+      sensor:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active sensor faults.
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active sensor fault
+      comm:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active communication faults
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active communication faults.
+      other:
+        type: object
+        properties:
+          num:
+            type: string
+            description: Number of active other faults.
+          last:
+            type: string
+            format: date-time
+            description:  timestamp of oldest active fault (others)
+  netEnergyMeasurements:
+    type: object
+    description: Net energy measurements of a given plant
+    properties:
+      WHl:
+        type: number
+        description: Lifetime ac energy exported to facility loads
+        format: float 
+      WHx:
+        type: number
+        description: Lifetime ac energy exported to grid
+        format: float 
+      WHi:
+        type: number
+        description: Lifetime ac energy imported from grid
+        format: float
+      WHc:
+        type: number
+        description: Lifetime ac energy charged to storage
+        format: float
+      WHd:
+        type: number
+        description: Lifetime ac energy discharged from storage
+        format: float
+      WHp:
+        type: number
+        description: Lifetime ac energy imported to PV (parasitic losses)
+        format: float
+  
+  plantLevelMeasurements:
+    type: object
+    properties:
+      WH:
+        type: number
+        description: Lifetime AC energy generated by all PV
+        format: float 
+      W:
+        type: number
+        description: AC real power reference at point of interconnect
+        format: float 
+      V:
+        type: string
+        description: AC voltage reference at point of interconnect
+        format: float
+      A:
+        type: number
+        description: AC current reference at point of interconnect
+        format: float
+      Hz:
+        type: number
+        description: Frequency reference at point of interconnect
+        format: float
+      PF:
+        type: number
+        description: Powerfactor reference at point of interconect
+        format: float
+      Gghi:
+        type: number
+        description: Powerfactor reference at point of interconect
+        format: float
+      Tmpamb:
+        type: number
+        description: Ambient temperature reference 
+        format: float 
+      WndSpd:
+        type: number
+        description: Wind speed reference
+        format: float
+      Pres:
+        type: number
+        description: Atmospheric pressure reference
+        format: float
+      RH:
+        type: number
+        description: Relative humidity reference 
+        format: float
+      Rain:
+        type: number
+        description: Lifetime rainfall totals
+        format: float
+  
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+        
